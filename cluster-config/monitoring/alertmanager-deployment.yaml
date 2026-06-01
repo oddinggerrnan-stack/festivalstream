@@ -1,0 +1,22 @@
+# Dit is alertmanager, deze service zorgt ervoor dat er een melding wordt gemaakt als er een alert is. 
+# Hier wordt beschreven hoe alertmanager wordt gedeployed en welke service er bij hoort.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alertmanager
+  template:
+    metadata:
+      labels:
+        app: alertmanager
+    spec:
+      containers:
+        - name: alertmanager
+          image: prom/alertmanager:0.23.0
+          ports:
+            - containerPort: 9093

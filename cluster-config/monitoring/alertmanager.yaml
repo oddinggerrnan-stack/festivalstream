@@ -1,0 +1,12 @@
+# Dit is het configuratiebestand voor alertmanager, hier wordt beschreven hoe alertmanager werkt en welke ontvangers er zijn voor de meldingen.
+route:
+  receiver: email
+
+receivers:
+- name: email
+  email_configs:
+  - to: #beheerder@bedrijf.nl
+    from: #alertmanager@bedrijf.nl
+    smarthost: #smtp.gmail.com:587
+    auth_username: #gebruiker
+    auth_password: #wachtwoord
