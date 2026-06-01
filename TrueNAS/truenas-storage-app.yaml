@@ -22,7 +22,7 @@ spec:
           protocol: "http"
           host: "192.168.30.0"
           port: 80
-          apiKey: 1-rrvwA7HIfNDOOYE2ME6Xa0kX0GDaj9GqpMgUavw6aulJHNCL5hkr04aX6CQMOmnZ
+          apiKey: "1-mU6dxgL7u39Mb3EMAyZSEvAV7YHG7snYOvnzDfnbS6OVCXSV85ztr8bvJfIsZu3O"
           allowInsecure: true
 
         zfs:
