@@ -20,9 +20,9 @@ spec:
 
         httpConnection:
           apiVersion: 2
-          protocol: "http"
+          protocol: "https"
           host: "192.168.30.0"
-          port: 80
+          port: 443
           apiKey: "1-mU6dxgL7u39Mb3EMAyZSEvAV7YHG7snYOvnzDfnbS6OVCXSV85ztr8bvJfIsZu3O"
           allowInsecure: true
 
