@@ -19,11 +19,18 @@ spec:
             driver: freenas-nfs
 
         httpConnection:
+          apiVersion: 2
           protocol: "http"
           host: "192.168.30.0"
           port: 80
           apiKey: "1-mU6dxgL7u39Mb3EMAyZSEvAV7YHG7snYOvnzDfnbS6OVCXSV85ztr8bvJfIsZu3O"
           allowInsecure: true
+
+        sshConnection:
+          host: "192.168.30.0"
+          port: 22
+          username: "root"
+          password: "Welkom01!"
 
         zfs:
           datasetParentName: "/mnt/persistent-storage"
