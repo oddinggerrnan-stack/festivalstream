@@ -46,4 +46,9 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
+  name: storage-logs
+---
+apiVersion: v1
+kind: Namespace
+metadata:
   name: monitoring
