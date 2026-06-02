@@ -1,0 +1,60 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: democratic-csi-truenas
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://democratic-csi.github.io/charts/'
+    chart: democratic-csi
+    targetRevision: 0.14.0
+    helm:
+      values: |
+        csiDriver:
+          name: "org.democratic-csi.nfs"
+
+        driver:
+          config:
+            driver: freenas-nfs
+
+            httpConnection:
+              protocol: "http"
+              host: "192.168.30.0"
+              port: 80
+              apiKey: "1-mU6dxgL7u39Mb3EMAyZSEvAV7YHG7snYOvnzDfnbS6OVCXSV85ztr8bvJfIsZu3O"
+              allowInsecure: true
+
+            sshConnection:
+              host: "192.168.30.0"
+              port: 22
+              username: "root"
+              password: "Welkom01!"
+
+            zfs:
+              datasetParentName: "persistent-storage"
+              nfs:
+                shareHost: "192.168.30.0"
+                shareAlldirs: false
+                shareAllowedHosts: []
+                shareAllowedNetworks:
+                  - "192.168.20.0/24"
+                shareMaprootUser: "root"
+                shareMaprootGroup: "root"
+
+        storageClasses:
+          - name: truenas-nfs
+            defaultClass: false
+            reclaimPolicy: Retain    
+            volumeBindingMode: Immediate
+            allowVolumeExpansion: true
+
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: democratic-csi
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
