@@ -10,7 +10,7 @@ spec:
     chart: democratic-csi
     targetRevision: 0.14.0
     helm:
-      values: |
+      values:
         csiDriver:
           name: "org.democratic-csi.nfs"
 
