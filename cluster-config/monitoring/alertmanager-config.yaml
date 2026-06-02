@@ -1,0 +1,21 @@
+# Dit is het configuratiebestand voor alertmanager, hier wordt beschreven hoe alertmanager werkt en welke ontvangers er zijn voor de meldingen.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: monitoring
+data:
+  alertmanager.yml: |
+    global:
+      smtp_smarthost: 'smtp.gmail.com:587'
+      smtp_from: 'festivalstream.alerts@gmail.com'
+      smtp_auth_username: 'festivalstream.alerts@gmail.com'
+      smtp_auth_password: '42dxe4hJ74RZa#MLCc5G9#Yex8YrPQ'
+
+    route:
+      receiver: email
+
+    receivers:
+      - name: email
+        email_configs:
+          - to: 's1213277@student.windesheim.nl,s1195560@student.windesheim.nl,s1210207@student.windesheim.nl,s1212086@student.windesheim.nl,s1202501@student.windesheim.nl'
