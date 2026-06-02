@@ -8,7 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: grafana.festivalstream.nl
+  - host: grafana.festivalstream.local
     http:
       paths:
       - path: /
