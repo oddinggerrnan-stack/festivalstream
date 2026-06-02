@@ -14,27 +14,24 @@ spec:
         csiDriver:
           name: "org.democratic-csi.nfs"
 
-        driver:
+      driver:
           config:
             driver: freenas-nfs
-
+            instance_id: truenas-nfs
+            zfs:
+              datasetParent: "persistent-storage/k8s-volumes"
+              detachedSnapshotsDatasetParent: "persistent-storage/snapshots"
             httpConnection:
               protocol: "http"
               host: "192.168.30.0"
               port: 80
               apiKey: "1-mU6dxgL7u39Mb3EMAyZSEvAV7YHG7snYOvnzDfnbS6OVCXSV85ztr8bvJfIsZu3O"
               allowInsecure: true
-
             sshConnection:
               host: "192.168.30.0"
               port: 22
               username: "root"
               password: "Welkom01!"
-
-            zfs:
-              datasetParent: "persistent-storage/k8s-volumes"
-              detachedSnapshotsDatasetParent: "persistent-storage/snapshots"
-
             nfs:
               shareHost: "192.168.30.0"
               shareAlldirs: false
@@ -42,7 +39,7 @@ spec:
               shareAllowedNetworks:
                 - "192.168.20.0/24"
               shareMaprootUser: "root"
-              shareMaprootGroup: "root"
+              shareMaprootGroup: "root
 
         storageClasses:
           - name: truenas-nfs
