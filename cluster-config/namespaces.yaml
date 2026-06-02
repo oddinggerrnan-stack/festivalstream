@@ -36,6 +36,11 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
+  name: democratic-csi-truenas
+---
+apiVersion: v1
+kind: Namespace
+metadata:
   name: storage-web
 ---
 apiVersion: v1
