@@ -10,17 +10,18 @@ spec:
     chart: democratic-csi
     targetRevision: 0.14.0
     helm:
-      values:
+      valuesObject:
         csiDriver:
           name: "org.democratic-csi.nfs"
+
         driver:
           config:
             driver: freenas-nfs
             instance_id: truenas-nfs
             httpConnection:
-              protocol: "http"
+              protocol: "https"      # Omgezet naar HTTPS
               host: "192.168.30.0"
-              port: 80
+              port: 443              # Omgezet naar poort 443
               apiKey: "1-mU6dxgL7u39Mb3EMAyZSEvAV7YHG7snYOvnzDfnbS6OVCXSV85ztr8bvJfIsZu3O"
               allowInsecure: true
             sshConnection:
@@ -30,7 +31,7 @@ spec:
               password: "Welkom01!"
             zfs:
               datasetParent: "persistent-storage/k8s-volumes"
-              detachedSnapshotsDatasetParent: "persistent-storage/k8s-volumes"
+              detachedSnapshotsDatasetParent: "persistent-storage/snapshots"
             nfs:
               shareHost: "192.168.30.0"
               shareAlldirs: false
