@@ -12,6 +12,7 @@
       set_fact:
         join_command: "{{ join_command_raw.stdout }}"
       delegate_to: "{{ item }}"
+      delegate_facts: true
       with_items: "{{ groups['new_workers'] }}"
 
 # DEEL 2: Bereid de nieuwe worker voor en voeg hem toe aan het cluster
@@ -19,6 +20,10 @@
   hosts: new_workers
   become: yes
   tasks:
+    - name: Stel de juiste hostname in op de Linux server
+      hostname:
+        name: "{{ inventory_hostname }}"
+        
     - name: Schakel swap uit (vereist voor Kubernetes)
       command: swapoff -a
 
