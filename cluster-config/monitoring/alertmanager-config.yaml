@@ -11,9 +11,13 @@ data:
       smtp_from: 'festivalstream.alerts@gmail.com'
       smtp_auth_username: 'festivalstream.alerts@gmail.com'
       smtp_auth_password: '42dxe4hJ74RZa#MLCc5G9#Yex8YrPQ'
+      smtp_require_tls: true
 
     route:
       receiver: email
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 1h
 
     receivers:
       - name: email

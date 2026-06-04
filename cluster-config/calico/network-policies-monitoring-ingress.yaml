@@ -8,7 +8,13 @@ spec:
   policyTypes:
   - Ingress
   ingress:
+  # Toestaan van verkeer van de ingress-nginx namespace naar de monitoring namespace
   - from:
     - namespaceSelector:
         matchLabels:
           kubernetes.io/metadata.name: ingress-nginx
+  # Toestaan van verkeer van de cluster-autoscaler namespace naar de monitoring namespace
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
