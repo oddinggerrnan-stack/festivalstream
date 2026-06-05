@@ -17,7 +17,7 @@ spec:
           service:
             name: grafana
             port:
-              number: 3000
+              number: 80
   - host: grafana.festivalstream.local
     http:
       paths:
@@ -27,4 +27,4 @@ spec:
           service:
             name: grafana
             port:
-              number: 3000
+              number: 80
