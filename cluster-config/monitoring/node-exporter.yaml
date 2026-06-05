@@ -20,14 +20,13 @@ spec:
       labels:
         app: node-exporter
     spec:
-      hostPID: true
-      hostNetwork: true
       serviceAccountName: node-exporter
       containers:
         - name: node-exporter
-          image: prom/node-exporter:v1.8.1  
+          image: prom/node-exporter:v1.8.1
           args:
             - --path.rootfs=/host
+            - --web.listen-address=:9100
           ports:
             - name: metrics
               containerPort: 9100
