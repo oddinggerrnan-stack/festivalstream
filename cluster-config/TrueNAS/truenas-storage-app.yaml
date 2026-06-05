@@ -39,7 +39,7 @@ spec:
               shareAllowedNetworks:
                 - "192.168.20.0/24"
               shareMaprootUser: "root"
-              shareMaprootGroup: "root"
+              shareMaprootGroup: "wheel"
 
         storageClasses:
           - name: truenas-nfs
@@ -47,6 +47,9 @@ spec:
             reclaimPolicy: Retain    
             volumeBindingMode: Immediate
             allowVolumeExpansion: true
+            mountOptions:                 
+              - nolock                    
+              - noresvport
 
   destination:
     server: 'https://kubernetes.default.svc'
