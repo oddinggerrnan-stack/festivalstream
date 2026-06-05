@@ -34,6 +34,10 @@ data:
           - targets:
               - kube-state-metrics:8080
 
+    storage:
+      tsdb:
+        retention_time: 24h
+
   alerts.yml: |
     groups:
       - name: test-alerts
