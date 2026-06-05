@@ -17,3 +17,10 @@ spec:
         image: nginx:latest
         ports:
         - containerPort: 80
+        resources:          
+          requests:
+            cpu: "100m"      # 100 millicores (0.1 CPU) gereserveerd
+            memory: "128Mi"
+          limits:
+            cpu: "500m"      # Maximaal een halve CPU per pod
+            memory: "256Mi"
