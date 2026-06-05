@@ -12,7 +12,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-ingress-to-chat
+  name: allow-ingress
   namespace: chat
 spec:
   podSelector: {}
@@ -31,7 +31,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-chat-egress
+  name: allow-egress
   namespace: chat
 spec:
   podSelector: {}
@@ -39,8 +39,9 @@ spec:
   - Egress
   egress:
   - to:
-    - ipBlock:
-        cidr: 192.168.30.0/24
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: storage-chat
   - to:
     - namespaceSelector:
         matchLabels:
