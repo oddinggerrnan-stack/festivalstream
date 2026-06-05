@@ -43,6 +43,10 @@ spec:
               value: admin
             - name: GF_PATHS_PROVISIONING
               value: /etc/grafana/provisioning
+            - name: GF_ANALYTICS_CHECK_FOR_UPDATES
+              value: "false"
+            - name: GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES
+              value: "false"
           volumeMounts:
             - name: grafana-storage
               mountPath: /var/lib/grafana

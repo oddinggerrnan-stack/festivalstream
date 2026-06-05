@@ -12,7 +12,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-ingress-to-vod
+  name: allow-ingress
   namespace: vod
 spec:
   podSelector: {}
@@ -31,7 +31,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-vod-egress
+  name: allow-egress
   namespace: vod
 spec:
   podSelector: {}
@@ -39,8 +39,9 @@ spec:
   - Egress
   egress:
   - to:
-    - ipBlock:
-        cidr: 192.168.30.0/24
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: storage-vod
   - to:
     - namespaceSelector:
         matchLabels:
