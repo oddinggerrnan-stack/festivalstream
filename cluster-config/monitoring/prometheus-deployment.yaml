@@ -84,4 +84,4 @@ spec:
             name: prometheus-config
         - name: prometheus-storage
           persistentVolumeClaim:
-            claimName: monitoring-pvc
+            claimName: prometheus-storage-pvc

@@ -47,6 +47,9 @@ spec:
             reclaimPolicy: Retain    
             volumeBindingMode: Immediate
             allowVolumeExpansion: true
+            mountOptions:                 
+              - nolock                    
+              - noresvport
 
   destination:
     server: 'https://kubernetes.default.svc'
