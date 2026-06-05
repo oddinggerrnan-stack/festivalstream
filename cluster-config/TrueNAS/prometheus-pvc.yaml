@@ -4,9 +4,9 @@ metadata:
   name: prometheus-storage-pvc
   namespace: monitoring
 spec:
-  accessModes:
-    - ReadWriteOnce
   storageClassName: truenas-nfs 
+  accessModes:
+    - ReadWriteMany
   resources:
     requests:
       storage: 10Gi 
