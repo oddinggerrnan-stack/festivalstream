@@ -23,11 +23,15 @@ spec:
     - namespaceSelector:
         matchLabels:
           kubernetes.io/metadata.name: ingress-nginx
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-web-client-to-storage-and-mon
+  name: allow-web-client-egress
   namespace: web-client
 spec:
   podSelector: {}
@@ -35,10 +39,13 @@ spec:
   - Egress
   egress:
   - to:
+    - ipBlock:
+        cidr: 192.168.30.0/24
     - namespaceSelector:
         matchLabels:
-          kubernetes.io/metadata.name: monitoring
-  - to:
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: storage-web
+          kubernetes.io/metadata.name: kube-system
+    ports:
+    - port: 53
+      protocol: UDP
+    - port: 53
+      protocol: TCP
