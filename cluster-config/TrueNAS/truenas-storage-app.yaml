@@ -39,7 +39,7 @@ spec:
               shareAllowedNetworks:
                 - "192.168.20.0/24"
               shareMaprootUser: "root"
-              shareMaprootGroup: "root"
+              shareMaprootGroup: "wheel"
 
         storageClasses:
           - name: truenas-nfs
