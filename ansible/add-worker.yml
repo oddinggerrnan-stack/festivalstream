@@ -1,0 +1,104 @@
+---
+# DEEL 1: Haal het join-commando op van de master node
+- name: Genereer het join token op de master
+  hosts: masters
+  become: yes
+  tasks:
+    - name: Maak een nieuw token aan en print het join commando
+      command: kubeadm token create --print-join-command
+      register: join_command_raw
+
+    - name: Sla het commando tijdelijk op in het geheugen van Ansible
+      set_fact:
+        join_command: "{{ join_command_raw.stdout }}"
+      delegate_to: "{{ item }}"
+      delegate_facts: true
+      with_items: "{{ groups['new_workers'] }}"
+
+# DEEL 2: Bereid de nieuwe worker voor en voeg hem toe aan het cluster
+- name: Installeer en configureer de nieuwe worker node
+  hosts: new_workers
+  become: yes
+  tasks:
+    - name: Stel de juiste hostname in op de Linux server
+      hostname:
+        name: "{{ inventory_hostname }}"
+        
+    - name: Schakel swap uit (vereist voor Kubernetes)
+      command: swapoff -a
+
+    - name: Verwijder swap definitief uit /etc/fstab
+      replace:
+        path: /etc/fstab
+        regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+        replace: '# \1'
+
+    - name: Laad benodigde kernel modules voor containerd en Kubernetes
+      modprobe:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - overlay
+        - br_netfilter
+
+    - name: Configureer sysctl netwerk-parameters (IP forwarding)
+      sysctl:
+        name: "{{ item.name }}"
+        value: "1"
+        state: present
+        reload: yes
+      loop:
+        - { name: 'net.bridge.bridge-nf-call-iptables' }
+        - { name: 'net.ipv4.ip_forward' }
+        - { name: 'net.bridge.bridge-nf-call-ip6tables' }
+
+    - name: Installeer basis vereisten (curl, apt-transport-https, etc.)
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gpg
+        state: present
+        update_cache: yes
+
+    - name: Installeer containerd (Container Runtime)
+      apt:
+        name: containerd
+        state: present
+
+    - name: Maak de map voor de Kubernetes APT-sleutel aan
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Download en installeer de Kubernetes GPG-sleutel (v1.29)
+      shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+      args:
+        creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+    - name: Voeg de Kubernetes apt-repository toe
+      apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /"
+        state: present
+        filename: kubernetes
+
+    - name: Installeer kubelet en kubeadm
+      apt:
+        name:
+          - kubelet
+          - kubeadm
+        state: present
+        update_cache: yes
+
+    - name: Zorg dat kubelet automatisch start bij het opstarten van de VM
+      systemd:
+        name: kubelet
+        enabled: yes
+        state: started
+
+    - name: Voeg de nieuwe worker node toe aan het Kubernetes cluster
+      command: "{{ join_command }}"
+      args:
+        creates: /etc/kubernetes/kubelet.conf

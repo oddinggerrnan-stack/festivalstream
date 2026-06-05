@@ -1,0 +1,2 @@
+Uitvoeren:
+ansible-playbook -i hosts.ini add-worker.yml -k -K
